@@ -783,7 +783,7 @@ int ubifs_read_superblock(struct ubifs_info *c)
 	/* in the following code the stored counter data from flash from previous mount is read */
 	
 	/* calculate the number of LEBs required to store the refresh counter data structure*/
-	uint32_t refreshCounterSizeinLEBs = (sizeof(ubifs_rfrsh)* (c->max_leb_cnt))/c->max_leb_cnt;
+	uint32_t refreshCounterSizeinLEBs = (sizeof(ubifs_rfrsh)* (c->max_leb_cnt))/c->leb_size;
 	/*As a design decision, the data is stored in end of memory bloc, then the the max LEB count needs to decreased*/
 	c->max_leb_cnt=c->max_leb_cnt-refreshCounterSizeinLEBs;
 	/* read the stored the counter in last LEB*/
