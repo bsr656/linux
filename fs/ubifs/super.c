@@ -1970,6 +1970,13 @@ static void ubifs_put_super(struct super_block *sb)
 			c->mst_node->flags &= ~cpu_to_le32(UBIFS_MST_DIRTY);
 			c->mst_node->flags |= cpu_to_le32(UBIFS_MST_NO_ORPHS);
 			c->mst_node->gc_lnum = cpu_to_le32(c->gc_lnum);
+			/* store the counter before deallocation*/
+			
+			/* Copy the counter values to the flash */
+			/* with the foolowing api the flash counter data structure is copied to flash*/
+			//int err_2= ubifs_write_node(c,c->rfrsh,)
+			/* after copying it to flash, the memory is de allocated*/
+			free(c->rfrsh);
 			err = ubifs_write_master(c);
 			if (err)
 				/*
