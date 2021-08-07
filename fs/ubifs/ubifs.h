@@ -1496,7 +1496,7 @@ struct ubifs_info {
 	struct rb_root size_tree;
 	struct ubifs_mount_opts mount_opts;
 
-	struct ubifs_rfrsh rfrsh*; 
+	struct ubifs_rfrsh* rfrsh; 
 	struct ubifs_debug_info *dbg;
 };
 
