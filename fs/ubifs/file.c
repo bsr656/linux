@@ -79,16 +79,18 @@ static int read_block(struct inode *inode, void *addr, unsigned int block,
 			       le16_to_cpu(dn->compr_type));
 	if(!err){
 		/*if the read is successfull without errors, increment block refresh counter*/
-		if(c->rfrsh[lnum].rfrsh_cntr<BLOCK_REFRESH_COUNTER_MAX_VAL)
+		/* physical erase block of flash memory extracted from ubu data sttructure*/
+		int pnum = ubifs_info->ubi->vol->eba_tbl->entries[lnum].pnum
+		if(c->rfrsh[pnum].rfrsh_cntr<BLOCK_REFRESH_COUNTER_MAX_VAL)
 		{				
-			c->rfrsh[lnum].rfrsh_cntr++;
+			c->rfrsh[pnum].rfrsh_cntr++;
 		}
 		else
 		{	/* if the counter exceeds BLOCK_REFRESH_COUNTER_MAX_VAL reset the counter to zero
 			and set rfrsh_needed_flag to '0x01' so that this can be used by function which rewrites the block.
 			The refresh flag shall be reset by the function which rewrites the block*/
-			c->rfrsh[lnum].rfrsh_cntr=0;	
-			c->rfrsh[lnum].rfrsh_needed_flag=1;
+			c->rfrsh[pnum].rfrsh_cntr=0;	
+			c->rfrsh[pnum].rfrsh_needed_flag=1;
 		}		
 	}
 	if (err || len != out_len)
