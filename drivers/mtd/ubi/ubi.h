@@ -679,6 +679,7 @@ struct ubi_ainf_peb {
 	int pnum;
 	int vol_id;
 	int lnum;
+	uint16_t refreshCounter;
 	unsigned int scrub:1;
 	unsigned int copy_flag:1;
 	unsigned long long sqnum;
