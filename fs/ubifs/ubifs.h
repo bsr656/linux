@@ -156,9 +156,6 @@
 #endif
 
 
-/* Maximum block refresh counter value */
-#define BLOCK_REFRESH_COUNTER_MAX_VAL 60000U
-
 /*
  * Lockdep classes for UBIFS inode @ui_mutex.
  */
@@ -1496,14 +1493,8 @@ struct ubifs_info {
 	struct rb_root size_tree;
 	struct ubifs_mount_opts mount_opts;
 
-	struct ubifs_rfrsh* rfrsh; 
 	struct ubifs_debug_info *dbg;
 };
-
-struct ubifs_rfrsh {
-	uint16_t rfrsh_cntr; /*block refresh counter*/
-	uint8_t rfrsh_needed_flag; /*refresh needed flag*/
-}	
 	
 	
 extern struct list_head ubifs_infos;

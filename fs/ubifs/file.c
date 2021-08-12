@@ -49,10 +49,9 @@ static int read_block(struct inode *inode, void *addr, unsigned int block,
 	int err, len, out_len;
 	union ubifs_key key;
 	unsigned int dlen;
-	int lnum;
 	/*create counter*/
 	data_key_init(c, &key, inode->i_ino, block);
-	err = ubifs_tnc_lookup(c, &key, dn, &lnum);
+	err = ubifs_tnc_lookup(c, &key, dn);
 	if (err) {
 		if (err == -ENOENT)
 			/* Not found, so it must be a hole */
@@ -77,22 +76,6 @@ static int read_block(struct inode *inode, void *addr, unsigned int block,
 	out_len = UBIFS_BLOCK_SIZE;
 	err = ubifs_decompress(c, &dn->data, dlen, addr, &out_len,
 			       le16_to_cpu(dn->compr_type));
-	if(!err){
-		/*if the read is successfull without errors, increment block refresh counter*/
-		/* physical erase block of flash memory extracted from ubu data sttructure*/
-		int pnum = ubifs_info->ubi->vol->eba_tbl->entries[lnum].pnum
-		if(c->rfrsh[pnum].rfrsh_cntr<BLOCK_REFRESH_COUNTER_MAX_VAL)
-		{				
-			c->rfrsh[pnum].rfrsh_cntr++;
-		}
-		else
-		{	/* if the counter exceeds BLOCK_REFRESH_COUNTER_MAX_VAL reset the counter to zero
-			and set rfrsh_needed_flag to '0x01' so that this can be used by function which rewrites the block.
-			The refresh flag shall be reset by the function which rewrites the block*/
-			c->rfrsh[pnum].rfrsh_cntr=0;	
-			c->rfrsh[pnum].rfrsh_needed_flag=1;
-		}		
-	}
 	if (err || len != out_len)
 		goto dump;
 
