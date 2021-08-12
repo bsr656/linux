@@ -220,7 +220,6 @@ static inline void *ubifs_idx_key(const struct ubifs_info *c,
  * @c: UBIFS file-system description object
  * @key: node key to lookup
  * @node: the node is returned here
- * @lnum: lnum is returned here
  *
  * This function look up and reads node with key @key. The caller has to make
  * sure the @node buffer is large enough to fit the node. Returns zero in case
@@ -228,9 +227,9 @@ static inline void *ubifs_idx_key(const struct ubifs_info *c,
  * case of failure.
  */
 static inline int ubifs_tnc_lookup(struct ubifs_info *c,
-				   const union ubifs_key *key, void *node,int *lnum)
+				   const union ubifs_key *key, void *node)
 {
-	return ubifs_tnc_locate(c, key, node, lnum, NULL);
+	return ubifs_tnc_locate(c, key, node, NULL);
 }
 
 /**
