@@ -46,6 +46,8 @@
  */
 struct ubi_eba_entry {
 	int pnum;
+   	uint16_t refreshCounter;
+   	uint8_t refreshNeededFlag;
 };
 
 /**
@@ -706,6 +708,17 @@ retry:
 		} else
 			goto out_unlock;
 	}
+   else{
+      if(vol->eba_tbl->entries[lnum].refreshCounter>BLOCK_REFRESH_COUNTER_MAX_VAL){
+         /* increment refresh counter*/
+         vol->eba_tbl->entries[lnum].refreshCounter++;
+      }
+      else{
+         /*reset refresh counter and set refresh needed flag to 1*/
+         vol->eba_tbl->entries[lnum].refreshCounter=0;
+         vol->eba_tbl->entries[lnum].refreshNeededFlag=1;
+      }
+   }
 
 	if (check) {
 		uint32_t crc1 = crc32(UBI_CRC32_INIT, buf, len);
